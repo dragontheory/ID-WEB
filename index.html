@@ -26,11 +26,17 @@
     }
 
     @command conditional if-html-contains {=
-      return (eventSelector.innerHTML.indexof(conditionalValue)!== -1) ? true : false;
+      return (eventSelector.innerHTML.indexOf(conditionalValue) !== -1) ? true : false;
     =}
-    app-panel:nth-of-type(4) list-cell:last-of-type:if-html-contains(,):observe {
+
+    list-cell:last-of-type:if-html-contains(,):observe {
       run: {=
-        o.obj.innerHTML = o.obj.innerHTML.replace(/,/g, '<br />');
+        let theHTML = o.obj.innerHTML;
+        theHTML = theHTML.replace(/xc=([\s\S]*?)pk=/gm, function(_, innards) {
+          return 'xc=' + innards.replace(/,/gm, 'D7460N') + 'pk=';
+        });
+        theHTML = theHTML.replace(/,/gm, '<br>').replace(/D7460N/gm, ',');
+        o.obj.innerHTML = theHTML;
       =};
     }
   </style>
